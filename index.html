@@ -37,49 +37,52 @@
       </div>
     </div>
 
-    <div class="app achivments" v-show="showAchivments">
+    <div class="app achivements" v-show="showAchivments">
       <div class="app__body">
-          <div class="app__body-inner">
-              <h2 class="app__body-title">
-                  <i class="fa fa-trophy" aria-hidden="true"></i>
-                  Достижения
-              </h2>
-              <div class="app__body-top">
-                  <div class="app__card">
-                      <div class="app__card-text">Счет</div>
-                      <div class="app__card-count">0</div>
-                  </div>
-                  <div class="app__card">
-                      <div class="app__card-text">Открыто рас</div>
-                      <div class="app__card-count">0</div>
-                  </div>
-                  <div class="app__card">
-                      <div class="app__card-text">Всего игр</div>
-                      <div class="app__card-count">0</div>
-                  </div>
-                  <div class="app__card">
-                      <div class="app__card-text">Любимая раса</div>
-                      <div class="app__card-count">0</div>
-                  </div>
-              </div>
-              <div class="app__body-middle">
-                  <div class="app_result">
-                      <div class="app__result-score">
-                          <i class="fa fa-star" aria-hidden="true"></i>
-                          <div class="app_result-count">150</div>
-                      </div>
-                      <div class="app__result-name">Зерг</div>
-                      <div class="app__result-amount">5</div>
-                  </div>
-                  <div class="app__body-bottom">
-                      <button class="app__btn btn__back btn_achivment">
-                          <i class="fa fa-reply" aria-hidden="true"></i>
-                      </button>
-                  </div>
-              </div>
+        <div class="app__body-inner">
+          <h2 class="app__body-title">
+            <i class="fa fa-trophy" aria-hidden="true"></i>
+            Достижения
+          </h2>
+          <div class="app__body-top">
+            <div class="app__card">
+              <div class="app__card-">Счёт</div>
+              <div class="app__card-">{{ totalScore }}</div>
+            </div>
+            <div class="app__card">
+              <div class="app__card-">Открыто рас</div>
+              <div class="app__card-">{{ openRaces }}</div>
+            </div>
+            <div class="app__card">
+              <div class="app__card-">Всего игр</div>
+              <div class="app__card-">{{ totalGames }}</div>
+            </div>
+            <div class="app__card">
+              <div class="app__card-">Любимая раса</div>
+              <div class="app__card-">{{ favoriteRace }}</div>
+            </div>
           </div>
+          <div class="app__body-middle">
+            <div class="app_result"
+                 v-for="(race, k) in results"
+                 v-show="showResultRace[k]"
+                 @click="goToResult(k)">
+              <div class="app__result-score">
+                <i class="fa fa-star" aria-hidden="true"></i>
+                <div class="app__result-count">{{ race.points }}</div>
+              </div>
+              <div class="app__result-name">{{ race.name }}</div>
+              <div class="app__result-amount">{{ totalGame[k] }}</div>
+            </div>
+          </div>
+          <div class="app__body-bottom">
+            <button class="app__btn btn__back btn_achivement" @click="goToMain">
+              <i class="fa fa-reply" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
       </div>
-  </div>
+    </div>
 
     <div class="app" v-show="showQuestions">
       <div class="app__header">
@@ -324,7 +327,28 @@
   }
 })
 
-
+let audio = new Audio('audio/soundtrack.mp3') 
+let audio_btn = document.querySelector('.btn__sound') 
+let audio_icon = document.querySelector('.btn__sound i') 
+ 
+audio.muted = true; 
+audio.autoplay = true; 
+audio.volume = 0.2; 
+ 
+audio.addEventListener('loadmetadata', function() { 
+  audio.currentTime = 0 + Math.random() * (audio.duration + 1 - 0) 
+}) 
+audio_btn.addEventListener('click', function() { 
+  if(audio.muted) { 
+    audio.muted = false 
+    audio_icon.classList.add('fa-volume-up') 
+    audio_icon.classList.remove('fa-volume-off') 
+  } else if(!audio.muted) { 
+    audio.muted = true 
+    audio_icon.classList.add('fa-volume-off') 
+    audio_icon.classList.remove('fa-volume-up') 
+  } 
+})
   </script>
 </body>
 </html>
